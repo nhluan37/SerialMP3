@@ -1,0 +1,4 @@
+SerialMP3 	KEYWORD1
+init		KEYWORD2
+play		KEYWORD2
+decodeMP3Answer	KEYWORD2
