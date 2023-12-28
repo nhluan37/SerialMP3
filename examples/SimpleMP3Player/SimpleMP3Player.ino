@@ -8,7 +8,7 @@
       VCC --> 5V 
 ----------------------------------------------------*/
 
-#include "SerialMP3.h"
+#include <SerialMP3.h>
 
 #define RX_PIN 10  // RX pin 10
 #define TX_PIN 11  // TX pin 11
