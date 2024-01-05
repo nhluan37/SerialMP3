@@ -94,7 +94,7 @@ class SerialMP3 {
     String answerString();
     String byteToStringHex(uint8_t byte);
     bool show_debug;
-    uint8_t answer_buff[15] = {0}; // Buffer for the answers.
+    uint8_t answer_buff[10] = {0}; // Buffer for the answers.
 };
 
 #endif

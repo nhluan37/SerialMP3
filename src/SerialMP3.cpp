@@ -19,6 +19,8 @@ void SerialMP3::showDebug(bool status) {
 void SerialMP3::init() {
   serial_mp3->begin(9600); // Start mp3 communication
   delay(500); // Wait for initialization
+  reset();
+  delay(500);
   sendCommand(CMD_SELECT_DEVICE, 2); // Defaut device microSD
   delay(500); // Wait for initialization
   
@@ -144,7 +146,7 @@ void SerialMP3::sendCommand(uint8_t command, uint8_t data1, uint8_t data2) {
   uint8_t send_buf[8] = { 0 };  // Buffer for send command.
   String send_mp3 = "";         // mesage debug
 
-  delay(10);
+  delay(20);
   send_buf[0] = 0x7E;     // Start byte
   send_buf[1] = 0xFF;     // Version info
   send_buf[2] = 0x06;     // Command length not including Start and End byte.
@@ -161,10 +163,9 @@ void SerialMP3::sendCommand(uint8_t command, uint8_t data1, uint8_t data2) {
 
   if (show_debug) {
     Serial.print("Send: ");
-    Serial.println(send_mp3);
+    Serial.println(send_mp3); // Watch what are we sending
   }
-
-  delay(500);  // Wait between sending commands
+  delay(500); // Wait between sending commands.
 }
 
 String SerialMP3::decodeMP3Answer() {
@@ -178,19 +179,25 @@ String SerialMP3::decodeMP3Answer() {
 
   switch (answer_buff[3]) {
     case 0x3A:
-      decoded_answer += " -> Memory card inserted.";
+      decoded_answer += " -> MicroSD card inserted.";
       break;
 
     case 0x3B:
-      decoded_answer += " -> Removed the memory card.";
+      decoded_answer += " -> MicroSD card removed.";
       break;
 
     case 0x3D:
       decoded_answer += " -> Completed play num " + String(answer_buff[6], DEC);
       break;
 
+    case 0x3F:
+      switch (answer_buff[6]) {
+        case 2: decoded_answer += " -> MicroSD ready."; break;
+      }
+      break;
+
     case 0x40:
-      decoded_answer += " -> Error";
+      decoded_answer += " -> Error!";
       break;
 
     case 0x41:
@@ -260,8 +267,8 @@ String SerialMP3::answerString() {
   // read while something readed and it's not the end "0xEF"
 
   uint8_t b;
-  String mp3_answer = "";  // Answer from the MPESerial
-  int buff_index = 0;
+  String mp3_answer = "";  // Answer from the Serial MP3 Player
+  uint8_t buff_index = 0;
 
   if (serial_mp3->available()) {
     do {
