@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------
-  SerialMP3.h - Library for Serial MP3 Player board GD3300D chip.
+  SerialMP3.h - Library for Serial MP3 Player board GD3300D/TD5580A chip.
   Created by nhLuan, December 24, 2023.
 --------------------------------------------------------------------*/
 
