@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------
-  SerialMP3.h - Library for Serial MP3 Player board GD3300D chip.
+  SerialMP3.h - Library for Serial MP3 Player board GD3300D/TD5580A chip.
   Created by nhLuan, December 24, 2023.
 --------------------------------------------------------------------*/
 
@@ -165,7 +165,10 @@ void SerialMP3::sendCommand(uint8_t command, uint8_t data1, uint8_t data2) {
     Serial.print("Send: ");
     Serial.println(send_mp3); // Watch what are we sending
   }
-  delay(500); // Wait between sending commands.
+
+  #ifndef NO_SERIALMP3_DELAY
+    delay(500); // Wait between sending commands.
+  #endif
 }
 
 String SerialMP3::decodeMP3Answer() {
